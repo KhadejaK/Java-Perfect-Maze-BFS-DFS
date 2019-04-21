@@ -1,4 +1,4 @@
-package cs146S19.Khalid.project3;
+
 
 /**
  * A program that will automatically generate and solve mazes. 
@@ -11,6 +11,7 @@ package cs146S19.Khalid.project3;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
@@ -22,6 +23,10 @@ public class Maze
 	private int row;                                     // Stores the dimensions of the maze
 	private int vertices;                                // Stores the total vertices
 	private ArrayList<LinkedList<Integer>> adjList;      // stores the adjacency list of the vertices
+	
+	private ArrayList<Integer> orderVisitedBFS;
+	private ArrayList<Integer> solutionBFS;
+	
 	
 	/**
 	 * Constructs a Maze (2D Array) and represents it as an adjacency list of linked lists
@@ -57,6 +62,11 @@ public class Maze
 				i++;
 			}
 		}
+	}
+	
+	public void setGraph(ArrayList<LinkedList<Integer>> adjList)
+	{
+		this.adjList = adjList;
 	}
 	
 	/**
@@ -231,4 +241,235 @@ public class Maze
 			
 		return printMaze;
 	}
+	
+	public void BFS()
+	{
+		boolean[] visited = new boolean[vertices];
+		int[] previous = new int[vertices]; //vertex at index was visited after element at indexx
+		for(int i = 0; i < visited.length; i++)
+		{
+			visited[i] = false;
+			previous[i] = -1;;
+		}
+		
+		ArrayList<Integer> orderOfNodesVisited = new ArrayList<>();
+		ArrayList<Integer> queue = new ArrayList<>(); //nodes to visit
+		
+		visited[0] = true; //we always enter maze at upper left hand corner
+		queue.add(0); 
+		
+		boolean exit = false;
+		while(queue.size() != 0)
+		{
+			int exploredCell = queue.remove(0);
+			orderOfNodesVisited.add(exploredCell); 
+			
+			LinkedList<Integer> neighborsToExplore = adjList.get(exploredCell);
+			
+			if(exit)
+			{
+				break;
+			}
+			
+			for(int i = neighborsToExplore.size() - 1; i >= 0; i --)
+			{
+				int neighbor = neighborsToExplore.get(i);
+				if(visited[neighbor] == false)
+				{
+					visited[neighbor] = true;
+					previous[neighbor] = exploredCell;
+					queue.add(neighbor);
+					
+				}
+				if(i == vertices - 1)
+				{
+					exit = true;
+					break;
+				}
+				
+			}//end for
+			
+		}//end while
+		
+		System.out.println();
+
+		
+		ArrayList<Integer> shortestPath = new ArrayList<>();
+		
+		for(int i = previous.length - 1; i >= 0; i--)
+		{
+			shortestPath.add(previous[i]);
+			if(previous[i] == 1 || previous[i] == row)
+			{
+				break;
+			}
+			
+		}
+		shortestPath.add(vertices - 1);
+		System.out.println();
+		Collections.sort(shortestPath);
+
+		orderVisitedBFS = orderOfNodesVisited;
+		solutionBFS = shortestPath;
+
+		System.out.println(displayMazeSolutionBFS());
+		System.out.println();
+		System.out.println(displayMazeVisitsBFS());
+	}//end BFS()
+	
+	public String displayMazeSolutionBFS()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			String wall = "";
+			String floor = "";
+			if(x == 0)
+			{
+				wall += "|#";
+				//wall += "|0";
+			}
+			else
+			{
+				if(solutionBFS.contains(x * row -1))
+				{
+					wall += "|#";
+				}
+				else
+				{
+					wall += "| ";
+				}
+			}
+			
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+				{
+					if(solutionBFS.contains(mazeLocation[x][y]) || solutionBFS.contains(mazeLocation[x][y+1]))
+					{
+						wall += " #";
+					}
+					else
+					{
+						wall += "  ";
+					}
+					
+				}
+				else if (y+1 == row)
+					wall += "|";
+				else 
+					if(solutionBFS.contains(mazeLocation[x][y] + 1)) 
+					{
+						wall += "|#";
+					}
+					else
+					{
+						wall += "| ";
+					}
+					
+				
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+	
+	public String displayMazeVisitsBFS()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			int order = orderVisitedBFS.indexOf(mazeLocation[x][0]) % 10;
+			String wall = "";
+			String floor = "";
+
+			wall += "|" + order;
+
+			
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row)
+				{
+					order = orderVisitedBFS.indexOf(mazeLocation[x][y+1]) % 10;
+				}
+				else
+				{
+					order = orderVisitedBFS.indexOf(mazeLocation[x][y]) % 10;
+				}
+				
+
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+					wall += " " + order;
+				else if (y+1 == row)
+					wall += "|";
+				else 
+					wall += "|" + order;
+				
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+
 }
