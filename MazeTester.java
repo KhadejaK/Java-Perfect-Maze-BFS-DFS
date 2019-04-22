@@ -1,4 +1,3 @@
-package sok.cs146.project3;
 
 /**
  * Our Test cases for the Maze
@@ -114,8 +113,5 @@ public class MazeTester
 		System.out.println(maze5.displayMazeSolutionBFS());
 		System.out.println(maze5.displayBFSInfo());
 		
-	}
-	
-
+  }
 }
-

@@ -63,16 +63,17 @@ public class MazeTest {
 		System.out.println("---------FOUR BY FOUR MAXTRIX--------");
 		Maze maze = new Maze(4);
 		maze.setGraph(adjList4by4);
+		System.out.print(maze.displayMaze());
 		
 		String solution4by4 = "+ +-+-+-+\n"
-						    + "|# #|   |\n"
-							+ "+-+ +-+ +\n"
-							+ "| |# # #|\n"
-							+ "+ +-+-+ +\n"
-							+ "|# # # #|\n"
-							+ "+ +-+-+-+\n"
-							+ "|# # # #|\n"
-							+ "+-+-+-+ +";
+                        + "|# #|   |\n"
+                        + "+-+ +-+ +\n"
+                        + "| |# # #|\n"
+                        + "+ +-+-+ +\n"
+                        + "|# # # #|\n"
+                        + "+ +-+-+-+\n"
+                        + "|# # # #|\n"
+                        + "+-+-+-+ +";
 		
 		//DFS
 		System.out.println("\n\nDFS:");
@@ -86,6 +87,7 @@ public class MazeTest {
 		
 		//BFS
 		System.out.println("\nBFS:");
+		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
 		System.out.println(maze.displayMazeVisitsBFS());
 		System.out.println();
@@ -208,20 +210,21 @@ public class MazeTest {
 		System.out.println("----------SIX BY SIX MAXTRIX---------");
 		Maze maze = new Maze(6);
 		maze.setGraph(adjList);
+		System.out.print(maze.displayMaze());
 		
 		String solution6by6 = "+ +-+-+-+-+-+\n"
-							+ "|# #|       |\n"
-							+ "+-+ +-+-+-+ +\n"
-							+ "| |# # # #| |\n"
-							+ "+ +-+-+-+ + +\n"
-							+ "|     | |# #|\n"
-							+ "+ +-+ + +-+ +\n"
-							+ "| |       |#|\n"
-							+ "+ +-+-+-+-+ +\n"
-							+ "|     |# # #|\n"
-							+ "+ +-+ + +-+-+\n"
-							+ "|   |  # # #|\n"
-							+ "+-+-+-+-+-+ +";
+                        + "|# #|       |\n"
+                        + "+-+ +-+-+-+ +\n"
+                        + "| |# # # #| |\n"
+                        + "+ +-+-+-+ + +\n"
+                        + "|     | |# #|\n"
+                        + "+ +-+ + +-+ +\n"
+                        + "| |       |#|\n"
+                        + "+ +-+-+-+-+ +\n"
+                        + "|     |# # #|\n"
+                        + "+ +-+ + +-+-+\n"
+                        + "|   |  # # #|\n"
+                        + "+-+-+-+-+-+ +";
 		
 		//DFS
 		System.out.println("\n\nDFS:");
@@ -236,6 +239,7 @@ public class MazeTest {
 		
 		//BFS
 		System.out.println("\nBFS:");
+		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
 		System.out.println(maze.displayMazeVisitsBFS());
 		System.out.println();
@@ -449,22 +453,22 @@ public class MazeTest {
 		System.out.print(maze.displayMaze());
 		
 		String solution8by8 = "+ +-+-+-+-+-+-+-+\n"
-							+ "|# #|      # #| |\n"
-							+ "+-+ +-+-+-+ + + +\n"
-							+ "| |# # # #|#|# #|\n"
-							+ "+ +-+-+-+ + +-+ +\n"
-							+ "|   |   |# #|# #|\n"
-							+ "+ + + + +-+-+ +-+\n"
-							+ "| |   | |# # #| |\n"
-							+ "+ +-+-+-+ +-+-+ +\n"
-							+ "|# # # # #|# #| |\n"
-							+ "+ +-+-+-+-+ + + +\n"
-							+ "|#|# # #|# #|#| |\n"
-							+ "+ + +-+ + +-+ + +\n"
-							+ "|#|#| |#|#|# #| |\n"
-							+ "+ + + + + + +-+ +\n"
-							+ "|# #|  # #|# # #|\n"
-							+ "+-+-+-+-+-+-+-+ +";
+                        + "|# #|      # #| |\n"
+                        + "+-+ +-+-+-+ + + +\n"
+                        + "| |# # # #|#|# #|\n"
+                        + "+ +-+-+-+ + +-+ +\n"
+                        + "|   |   |# #|# #|\n"
+                        + "+ + + + +-+-+ +-+\n"
+                        + "| |   | |# # #| |\n"
+                        + "+ +-+-+-+ +-+-+ +\n"
+                        + "|# # # # #|# #| |\n"
+                        + "+ +-+-+-+-+ + + +\n"
+                        + "|#|# # #|# #|#| |\n"
+                        + "+ + +-+ + +-+ + +\n"
+                        + "|#|#| |#|#|# #| |\n"
+                        + "+ + + + + + +-+ +\n"
+                        + "|# #|  # #|# # #|\n"
+                        + "+-+-+-+-+-+-+-+ +";
 		
 		//DFS
 		System.out.println("\n\nDFS:");
@@ -839,5 +843,4 @@ public class MazeTest {
 		//JUnits Test
 		assertEquals(solution10by10, maze.displayDFSPath());
 	}
-
 }
