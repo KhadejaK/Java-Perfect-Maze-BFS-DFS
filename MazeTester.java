@@ -24,6 +24,10 @@ public class MazeTester
 		
 		System.out.println("\nBFS:");
 		maze1.BFS();
+		System.out.println(maze1.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze1.displayMazeSolutionBFS());
+		System.out.println(maze1.displayBFSInfo());
 		
 		System.out.println("\n---------------------------------------");
 		System.out.println("4x4 Maze\n");
@@ -41,6 +45,10 @@ public class MazeTester
 		
 		System.out.println("\nBFS:");
 		maze2.BFS();
+		System.out.println(maze2.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze2.displayMazeSolutionBFS());
+		System.out.println(maze2.displayBFSInfo());
 		
 		System.out.println("\n---------------------------------------");
 		System.out.println("6x6 Maze\n");
@@ -58,6 +66,10 @@ public class MazeTester
 		
 		System.out.println("\nBFS:");
 		maze3.BFS();
+		System.out.println(maze3.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze3.displayMazeSolutionBFS());
+		System.out.println(maze3.displayBFSInfo());
 		
 		System.out.println("\n---------------------------------------");
 		System.out.println("8x8 Maze\n");
@@ -75,6 +87,10 @@ public class MazeTester
 		
 		System.out.println("\nBFS:");
 		maze4.BFS();
+		System.out.println(maze4.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze4.displayMazeSolutionBFS());
+		System.out.println(maze4.displayBFSInfo());
 		
 		System.out.println("\n---------------------------------------");
 		System.out.println("10x10 Maze\n");
@@ -92,6 +108,11 @@ public class MazeTester
 		
 		System.out.println("\nBFS:");
 		maze5.BFS();
+		System.out.println(maze5.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze5.displayMazeSolutionBFS());
+		System.out.println(maze5.displayBFSInfo());
 		
 	}
 }
+
