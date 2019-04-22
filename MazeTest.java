@@ -87,10 +87,10 @@ public class MazeTest {
 		//BFS
 		System.out.println("\nBFS:");
 		maze.BFS();
-		System.out.println(maze.displayDFS());
+		System.out.println(maze.displayMazeVisitsBFS());
 		System.out.println();
-		System.out.println(maze.displayDFSPath());
-		System.out.println(maze.displayDFSInfo());
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
 		//JUnits Test
 		assertEquals(solution4by4, maze.displayMazeSolutionBFS());
 	}
@@ -237,11 +237,10 @@ public class MazeTest {
 		//BFS
 		System.out.println("\nBFS:");
 		maze.BFS();
-		System.out.println(maze.displayDFS());
+		System.out.println(maze.displayMazeVisitsBFS());
 		System.out.println();
-		System.out.println(maze.displayDFSPath());
-		System.out.println(maze.displayDFSInfo());
-		
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
 		//JUnits Test
 		assertEquals(solution6by6, maze.displayMazeSolutionBFS());
 	}
@@ -481,14 +480,13 @@ public class MazeTest {
 		
 		//BFS
 		System.out.println("\nBFS:");
-		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
-		System.out.println(maze.displayDFS());
+		System.out.println(maze.displayMazeVisitsBFS());
 		System.out.println();
-		System.out.println(maze.displayDFSPath());
-		System.out.println(maze.displayDFSInfo());
-		// JUnits Test
-		assertEquals(solution8by8, maze.displayMazeSolutionBFS());		
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
+		//JUnits Test
+		assertEquals(solution8by8, maze.displayMazeSolutionBFS());	
 	}
 	
 	@Test
@@ -838,8 +836,8 @@ public class MazeTest {
 		System.out.println();
 		System.out.println(maze.displayDFSPath());
 		System.out.println(maze.displayDFSInfo());
-		// JUnits Test
-		//assertEquals(solution10by10, maze.displayMazeSolutionBFS());
+		//JUnits Test
+		assertEquals(solution10by10, maze.displayDFSPath());
 	}
 
 }
