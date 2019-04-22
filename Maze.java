@@ -1,5 +1,4 @@
 package cs146S19.Khalid.project3;
-
 /**
  * A program that will automatically generate and solve mazes. 
  * Each time you run the program, it will generate and print a new random maze and the solution. 
@@ -11,6 +10,7 @@ package cs146S19.Khalid.project3;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
@@ -21,7 +21,16 @@ public class Maze
 	private int[][] mazeLocation;                        // Stores the location of each vertices, 0 to # of vertices
 	private int row;                                     // Stores the dimensions of the maze
 	private int vertices;                                // Stores the total vertices
-	private ArrayList<LinkedList<Integer>> adjList;      // stores the adjacency list of the vertices
+	private ArrayList<LinkedList<Integer>> adjList;      // Stores the adjacency list of the vertices
+	
+	//For DFS
+	private int[] dfsVisited;                            // Stores the DFS visit time for each vertices
+	private int dfsVisitedCells;                         // Stores # of visited cells in DFS                         
+	private Stack<Integer> prevPos;                      // Stores the path for DFS
+	
+	//For BFS
+	private ArrayList<Integer> orderVisitedBFS;			// Stores the order of nodes visited by BFS
+	private ArrayList<Integer> solutionBFS;				// Stores the solution path for BFS
 	
 	/**
 	 * Constructs a Maze (2D Array) and represents it as an adjacency list of linked lists
@@ -57,6 +66,21 @@ public class Maze
 				i++;
 			}
 		}
+		
+		dfsVisited = new int[vertices];
+		for(int n=0; n<dfsVisited.length; n++)
+			dfsVisited[n] = -1;
+		dfsVisitedCells = 0;
+		prevPos = new Stack<Integer>();
+	}
+	
+	/**
+	 * Sets the adjaceny list of the graph
+	 * @param adjList - An ArrayList of LinkedLists of the adjacent values
+	 */
+	public void setGraph(ArrayList<LinkedList<Integer>> adjList)
+	{
+		this.adjList = adjList;
 	}
 	
 	/**
@@ -158,6 +182,7 @@ public class Maze
 		return direc;
 	}
 	
+	
 	/**
 	 * Display's Adjacency List
 	 * @return a String with the list
@@ -230,5 +255,515 @@ public class Maze
 		printMaze += "+ +";
 			
 		return printMaze;
+	}
+	
+	/***************************************************************************************************
+	 *  Depth First Search part here
+	 ***************************************************************************************************/
+	/**
+	 * Solve's the maze through Depth First Search algorithm via it's adjacency list
+	 */
+	public void solveDFS()
+	{
+		int time = 0;
+		
+		int position = 0;
+		dfsVisited[position] = time;
+		time++;
+		dfsVisitedCells++;
+		while (position != (vertices-1))
+		{
+			LinkedList<Integer> adjVert = adjList.get(position);
+			
+			boolean allVisited = true;    //Assume all positions are visited
+			Collections.sort(adjVert);    //Sort adjacency list
+			for(Integer n : adjVert)      //For all adjacent vertices
+			{
+				if (dfsVisited[n] == -1)  //If the vertex has not been visited
+				{
+					allVisited = false;      //Mark all visited as false
+					dfsVisitedCells++;       //Increment # of visited cells
+					dfsVisited[n] = time;    //The new position now carries a time visited
+					time++;
+					if (time == 10)
+						time = 0;
+					
+					prevPos.push(position);  //The previous position will be the current position
+					position = n;            //The new position is the unvisited position
+					break;
+				}
+			}
+			
+			if(allVisited == true) //However if all were visited
+			{
+				position = prevPos.pop();    //The position becomes the previous position
+			}
+		}
+		
+		prevPos.push(vertices-1);
+	}
+	
+	/**
+	 * Display's the maze with visited time - Depth First Search
+	 * @return a String representation of the maze
+	 */
+	public String displayDFS()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			String wall = "";
+			String floor = "";
+			if(dfsVisited[mazeLocation[x][0]] != -1)
+				wall += "|" + dfsVisited[mazeLocation[x][0]];
+			else
+				wall += "| ";
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+				{
+					if (dfsVisited[mazeLocation[x][y+1]] != -1)
+						wall += " " + dfsVisited[mazeLocation[x][y+1]];
+					else
+						wall += "  ";
+				}
+				else if (y+1 == row)
+					wall += "|";
+				else 
+				{
+					if (dfsVisited[mazeLocation[x][y+1]] != -1)
+						wall += "|" + dfsVisited[mazeLocation[x][y+1]];
+					else
+						wall += "| ";
+				}
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+	
+	/**
+	 * Display's the maze with the correct path - Depth First Search
+	 * @return a String representation of the maze
+	 */
+	public String displayDFSPath()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			String wall = "";
+			String floor = "";
+			if(prevPos.search(mazeLocation[x][0]) != -1)
+				wall += "|#";
+			else
+				wall += "| ";
+			
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+				{
+					if (prevPos.search(mazeLocation[x][y+1]) != -1)
+						wall += " #";
+					else
+						wall += "  ";
+				}
+				else if (y+1 == row)
+					wall += "|";
+				else 
+				{
+					if (prevPos.search(mazeLocation[x][y+1]) != -1)
+						wall += "|#";
+					else
+						wall += "| ";
+				}
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+	
+	/**
+	 * Contains the info, such as path, length, and number of visited cells
+	 * @return a String representation of the DFS information 
+	 */
+	public String displayDFSInfo()
+	{
+		String info = "";
+		int length = 0;
+		
+		info += "Path: ";
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(prevPos.search(mazeLocation[x][y]) != -1)
+				{
+					info += "(" + x + "," + y + ") ";
+					length++;
+				}
+			}
+		}
+		
+		info += "\n";
+		
+		info += "Length of path: " + length + "\n";
+		
+		info += "Visited cells: " + dfsVisitedCells + "\n";
+
+		return info;
+	}
+	
+	/***************************************************************************************************
+	 *  Breath First Search part here
+	 ***************************************************************************************************/
+	/*
+	 * BFS to visit cells and find the shortest path solution to the maze.
+	 * Prints the order of cells visited and the shortest path. 
+	 */
+	public void BFS()
+	{
+		boolean[] visited = new boolean[vertices];	//keep track of visited nodes
+		int[] previous = new int[vertices]; 		//vertex at index was visited after element at index
+		for(int i = 0; i < visited.length; i++)
+		{
+			visited[i] = false;
+			previous[i] = -1;
+		}
+		
+		ArrayList<Integer> orderOfNodesVisited = new ArrayList<>(); //keep track of order of nodes visited
+		ArrayList<Integer> queue = new ArrayList<>(); 				//nodes to visit
+		
+		visited[0] = true; //we always enter maze at upper left hand corner
+		queue.add(0); 
+		
+		boolean exit = false; 	//for ending while when exit found
+		
+		while(queue.size() != 0)
+		{
+			int exploredCell = queue.remove(0);	//the node whose neighbors to explore
+			orderOfNodesVisited.add(exploredCell); 
+			
+			LinkedList<Integer> neighborsToExplore = adjList.get(exploredCell);	//the neighbors to explore
+			
+			if(exit)
+			{
+				orderOfNodesVisited.add(vertices - 1); 
+				break;
+			}
+			
+			for(int i = neighborsToExplore.size() - 1; i >= 0; i --)
+			{
+				int neighbor = neighborsToExplore.get(i);
+				if(visited[neighbor] == false)
+				{
+					visited[neighbor] = true;
+					previous[neighbor] = exploredCell;
+					queue.add(neighbor);
+					
+				}
+				if(neighbor == vertices - 1)
+				{
+					exit = true;
+					break;
+				}
+				
+			}//end for
+		
+		}//end while
+			
+		ArrayList<Integer> shortestPath = new ArrayList<>();	//shortest path to solution
+		
+		int i = previous.length - 1;
+		
+		while (i != 0) {
+
+			shortestPath.add(i);
+			i = previous[i];
+			
+		}
+
+		shortestPath.add(vertices - 1);
+		Collections.sort(shortestPath);
+
+		orderVisitedBFS = orderOfNodesVisited;
+		solutionBFS = shortestPath;
+		
+	}//end BFS()
+	
+	/**
+	 * Displays the shortest path solution to the maze.
+	 * @return the string representation of the graph with the path
+	 */
+	public String displayMazeSolutionBFS()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			String wall = "";
+			String floor = "";
+			if(x == 0)
+			{
+				wall += "|#";
+			}
+			else
+			{
+				if(solutionBFS.contains(x * row))
+				{
+					wall += "|#";
+				}
+				else
+				{
+					wall += "| ";
+				}
+			}
+			
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+				{
+					if(solutionBFS.contains(mazeLocation[x][y]) || solutionBFS.contains(mazeLocation[x][y+1]))
+					{
+						wall += " #";
+					}
+					else
+					{
+						wall += "  ";
+					}
+					
+				}
+				else if (y+1 == row)
+					wall += "|";
+				else 
+					if(solutionBFS.contains(mazeLocation[x][y] + 1)) 
+					{
+						wall += "|#";
+					}
+					else
+					{
+						wall += "| ";
+					}
+					
+				
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+	
+	/**
+	 * Display the order of cells visited in the graph with
+	 * @return the string representation of the cells visited
+	 */
+	public String displayMazeVisitsBFS()
+	{
+		String printMaze = "+ ";
+		
+		for(int x=1; x<row; x++)
+			printMaze += "+-";
+		printMaze += "+\n";
+			
+		
+		ArrayList<String> walls = new ArrayList<String>();
+		ArrayList<String> floors = new ArrayList<String>();
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			int order = orderVisitedBFS.indexOf(mazeLocation[x][0]) % 10;
+			
+			String wall = "";
+			String floor = "";
+
+			if(order < 0)
+			{
+				wall += "| ";
+			}
+			else
+				wall += "|" + order;
+
+			order = 0;
+			
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(y+1 != row)
+				{
+					order = orderVisitedBFS.indexOf(mazeLocation[x][y+1]) % 10;
+				}
+				else
+				{
+					order = orderVisitedBFS.indexOf(mazeLocation[x][y]) % 10;
+				}
+				
+
+				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
+				{
+					if(order < 0)
+					{
+						wall += "  ";
+					}
+					else
+						wall += " " + order;
+				}
+					
+				else if (y+1 == row)
+					wall += "|";
+				else 
+				{
+					if(order < 0)
+					{
+						wall += "| ";
+					}
+					else
+						wall += "|" + order;
+				}	
+					
+				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
+					floor += "+ ";
+				else
+					floor += "+-";
+			}
+			floor += "+";
+			
+			walls.add(wall);
+			if (x != row-1)
+			{
+				floors.add(floor);
+			}
+		}
+		
+		for(int x=0; x<walls.size(); x++)
+		{
+			printMaze += walls.get(x) + "\n";
+			if (x != walls.size()-1)
+				printMaze += floors.get(x) + "\n";
+		}
+		
+		for(int x=0; x<row-1; x++)
+			printMaze += "+-";
+		printMaze += "+ +";
+			
+		return printMaze;
+	}
+	
+	/**
+	 * Contains the info, such as path, length, and number of visited cells
+	 * @return a String representation of the BFS information 
+	 */
+	public String displayBFSInfo()
+	{
+		String info = "";
+		int length = 1;
+		
+		info += "Path: (0,0) ";
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(solutionBFS.contains(mazeLocation[x][y]))
+				{
+					info += "(" + x + "," + y + ") ";
+					length++;
+				}
+			}
+		}
+		
+		info += "\n";
+		
+		info += "Length of path: " + length + "\n";
+		
+		info += "Visited cells: " + orderVisitedBFS.size() + "\n";
+
+		return info;
 	}
 }
