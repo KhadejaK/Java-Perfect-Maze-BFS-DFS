@@ -249,7 +249,7 @@ public class Maze
 		for(int i = 0; i < visited.length; i++)
 		{
 			visited[i] = false;
-			previous[i] = -1;;
+			previous[i] = -1;
 		}
 		
 		ArrayList<Integer> orderOfNodesVisited = new ArrayList<>();
@@ -288,17 +288,25 @@ public class Maze
 				}
 				
 			}//end for
-			
+		
 		}//end while
 		
 		System.out.println();
-
+		for(int i: orderOfNodesVisited)
+		{
+			System.out.print(i + " ");
+		}
+		
 		
 		ArrayList<Integer> shortestPath = new ArrayList<>();
 		
 		for(int i = previous.length - 1; i >= 0; i--)
 		{
-			shortestPath.add(previous[i]);
+			if(previous[i] != -1)
+			{
+				shortestPath.add(previous[i]);
+			}
+			
 			if(previous[i] == 1 || previous[i] == row)
 			{
 				break;
@@ -419,11 +427,18 @@ public class Maze
 		for(int x=0; x<mazeLocation.length; x++)
 		{
 			int order = orderVisitedBFS.indexOf(mazeLocation[x][0]) % 10;
+			
 			String wall = "";
 			String floor = "";
 
-			wall += "|" + order;
+			if(order < 0)
+			{
+				wall += "| ";
+			}
+			else
+				wall += "|" + order;
 
+			order = 0;
 			
 			for(int y=0; y<mazeLocation[x].length; y++)
 			{
@@ -438,12 +453,27 @@ public class Maze
 				
 
 				if(y+1 != row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x][y+1]))
-					wall += " " + order;
+				{
+					if(order < 0)
+					{
+						wall += "  ";
+					}
+					else
+						wall += " " + order;
+				}
+					
 				else if (y+1 == row)
 					wall += "|";
 				else 
-					wall += "|" + order;
-				
+				{
+					if(order < 0)
+					{
+						wall += "| ";
+					}
+					else
+						wall += "|" + order;
+				}	
+					
 				if((x+1 < row && adjList.get(mazeLocation[x][y]).contains(mazeLocation[x+1][y])))
 					floor += "+ ";
 				else
