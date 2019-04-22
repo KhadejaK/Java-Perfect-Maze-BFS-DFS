@@ -1,6 +1,5 @@
-package cs146S19.Khalid.project3;
-
 /**
+ 
  * A program that will automatically generate and solve mazes. 
  * Each time you run the program, it will generate and print a new random maze and the solution. 
  * We used depth-first search (DFS) and breadth-first search (BFS).
@@ -30,8 +29,8 @@ public class Maze
 	private Stack<Integer> prevPos;                      // Stores the path for DFS
 	
 	//For BFS
-	private ArrayList<Integer> orderVisitedBFS;
-	private ArrayList<Integer> solutionBFS;
+	private ArrayList<Integer> orderVisitedBFS;			// Stores the order of nodes visited by BFS
+	private ArrayList<Integer> solutionBFS;				// Stores the solution path for BFS
 	
 	/**
 	 * Constructs a Maze (2D Array) and represents it as an adjacency list of linked lists
@@ -479,6 +478,10 @@ public class Maze
 	/***************************************************************************************************
 	 *  Breath First Search part here
 	 ***************************************************************************************************/
+	/*
+	 * BFS to visit cells and find the shortest path solution to the maze.
+	 * Prints the order of cells visited and the shortest path. 
+	 */
 	public void BFS()
 	{
 		boolean[] visited = new boolean[vertices];
@@ -527,14 +530,7 @@ public class Maze
 			}//end for
 		
 		}//end while
-		
-		System.out.println();
-		for(int i: orderOfNodesVisited)
-		{
-			System.out.print(i + " ");
-		}
-		
-		
+			
 		ArrayList<Integer> shortestPath = new ArrayList<>();
 		
 		for(int i = previous.length - 1; i >= 0; i--)
@@ -550,6 +546,7 @@ public class Maze
 			}
 			
 		}
+		
 		shortestPath.add(vertices - 1);
 		System.out.println();
 		Collections.sort(shortestPath);
@@ -560,8 +557,14 @@ public class Maze
 		System.out.println(displayMazeSolutionBFS());
 		System.out.println();
 		System.out.println(displayMazeVisitsBFS());
+		System.out.println(displayBFSInfo());
+		
 	}//end BFS()
 	
+	/**
+	 * Displays the shortest path solution to the maze.
+	 * @return the string representation of the graph with the path
+	 */
 	public String displayMazeSolutionBFS()
 	{
 		String printMaze = "+ ";
@@ -581,7 +584,6 @@ public class Maze
 			if(x == 0)
 			{
 				wall += "|#";
-				//wall += "|0";
 			}
 			else
 			{
@@ -650,6 +652,10 @@ public class Maze
 		return printMaze;
 	}
 	
+	/**
+	 * Display the order of cells visited in the graph with
+	 * @return the string representation of the cells visited
+	 */
 	public String displayMazeVisitsBFS()
 	{
 		String printMaze = "+ ";
@@ -737,5 +743,36 @@ public class Maze
 		printMaze += "+ +";
 			
 		return printMaze;
+	}
+	
+	/**
+	 * Contains the info, such as path, length, and number of visited cells
+	 * @return a String representation of the BFS information 
+	 */
+	public String displayBFSInfo()
+	{
+		String info = "";
+		int length = 1;
+		
+		info += "Path: (0,0) ";
+		for(int x=0; x<mazeLocation.length; x++)
+		{
+			for(int y=0; y<mazeLocation[x].length; y++)
+			{
+				if(solutionBFS.contains(mazeLocation[x][y]))
+				{
+					info += "(" + x + "," + y + ") ";
+					length++;
+				}
+			}
+		}
+		
+		info += "\n";
+		
+		info += "Length of path: " + length + "\n";
+		
+		info += "Visited cells: " + orderVisitedBFS.size() + "\n";
+
+		return info;
 	}
 }
