@@ -501,6 +501,7 @@ public class Maze
 		
 		boolean exit = false; 	//for ending while when exit found
 		
+		int previousCount = 0;
 		while(queue.size() != 0)
 		{
 			int exploredCell = queue.remove(0);	//the node whose neighbors to explore
@@ -521,6 +522,7 @@ public class Maze
 				{
 					visited[neighbor] = true;
 					previous[neighbor] = exploredCell;
+					previousCount++;
 					queue.add(neighbor);
 					
 				}
@@ -535,11 +537,19 @@ public class Maze
 		}//end while
 			
 		ArrayList<Integer> shortestPath = new ArrayList<>();	//shortest path to solution
-		
-		int i = previous.length - 1;
-		
-		while (i != 0) {
+//		for(int i: previous)
+//		{
+//			System.out.print(" " +i);
+//		}
 
+		int i = previous.length - 1;
+		while (i != 0) 
+		{
+//			System.out.println(i);
+			if(i == -1)
+			{
+				break;
+			}
 			shortestPath.add(i);
 			i = previous[i];
 			
