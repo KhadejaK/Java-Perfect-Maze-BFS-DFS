@@ -113,6 +113,5 @@ public class MazeTester
 		System.out.println(maze5.displayMazeSolutionBFS());
 		System.out.println(maze5.displayBFSInfo());
 		
-	}
+  }
 }
-
