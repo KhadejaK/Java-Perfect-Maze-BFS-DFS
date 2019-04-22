@@ -1,75 +1,97 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
 
+/**
+ * Our Test cases for the Maze
+ * @author Khadeja Khalid
+ * @author Diana Sok
+ *
+ */
 public class MazeTester 
 {
 	public static void main(String[] args)
 	{
-		Maze maze = new Maze(5);
-		maze.generateMaze();
+		System.out.println("2x2 Maze\n");
+		Maze maze1 = new Maze(2);
+		maze1.generateMaze();
+		//System.out.print(maze.displayAdjList());
+		System.out.print(maze1.displayMaze());
 		
-		System.out.println(maze.displayAdjList());
-		
-		System.out.println(maze.displayMaze());
+		System.out.println("\n\nDFS:");
+		maze1.solveDFS();
+		System.out.println(maze1.displayDFS());
 		System.out.println();
-		maze.BFS();
+		System.out.println(maze1.displayDFSPath());
+		System.out.println(maze1.displayDFSInfo());
 		
-//		ArrayList<LinkedList<Integer>> adjList4by4 = new ArrayList<LinkedList<Integer>>();
-//		
-//		for(int i = 0; i < 16; i++)
-//		{
-//			adjList4by4.add(new LinkedList<Integer>());
-//		}
-//		adjList4by4.get(0).add(1);
-//		
-//		adjList4by4.get(1).add(0);
-//		adjList4by4.get(1).add(5);
-//		
-//		adjList4by4.get(2).add(3);
-//		
-//		adjList4by4.get(3).add(2);
-//		adjList4by4.get(3).add(7);
-//		
-//		adjList4by4.get(4).add(8);
-//		
-//		adjList4by4.get(5).add(1);
-//		adjList4by4.get(5).add(6);
-//		
-//		adjList4by4.get(6).add(5);
-//		adjList4by4.get(6).add(7);
-//		
-//		adjList4by4.get(7).add(3);
-//		adjList4by4.get(7).add(11);
-//		
-//		adjList4by4.get(11).add(7);
-//		adjList4by4.get(11).add(10);
-//		
-//		adjList4by4.get(10).add(9);
-//		adjList4by4.get(10).add(11);
-//		
-//		adjList4by4.get(9).add(10);
-//		adjList4by4.get(9).add(8);
-//		
-//		adjList4by4.get(8).add(9);
-//		adjList4by4.get(8).add(4);
-//		adjList4by4.get(8).add(12);
-//		
-//		adjList4by4.get(12).add(8);
-//		adjList4by4.get(12).add(13);
-//		
-//		adjList4by4.get(13).add(12);
-//		adjList4by4.get(13).add(14);
-//		
-//		adjList4by4.get(14).add(13);
-//		adjList4by4.get(14).add(15);
-//		
-//		adjList4by4.get(15).add(14);
-//		
-//		maze.setGraph(adjList4by4);
-//		
-//		System.out.print(maze.displayMaze());
-//		maze.BFS();
+		System.out.println("\nBFS:");
+		maze1.BFS();
+		
+		System.out.println("\n---------------------------------------");
+		System.out.println("4x4 Maze\n");
+		Maze maze2 = new Maze(4);
+		maze2.generateMaze();
+		//System.out.print(maze.displayAdjList());
+		System.out.print(maze2.displayMaze());
+		
+		System.out.println("\n\nDFS:");
+		maze2.solveDFS();
+		System.out.println(maze2.displayDFS());
+		System.out.println();
+		System.out.println(maze2.displayDFSPath());
+		System.out.println(maze2.displayDFSInfo());
+		
+		System.out.println("\nBFS:");
+		maze2.BFS();
+		
+		System.out.println("\n---------------------------------------");
+		System.out.println("6x6 Maze\n");
+		Maze maze3 = new Maze(6);
+		maze3.generateMaze();
+		//System.out.print(maze.displayAdjList());
+		System.out.print(maze3.displayMaze());
+		
+		System.out.println("\n\nDFS:");
+		maze3.solveDFS();
+		System.out.println(maze3.displayDFS());
+		System.out.println();
+		System.out.println(maze3.displayDFSPath());
+		System.out.println(maze3.displayDFSInfo());
+		
+		System.out.println("\nBFS:");
+		maze3.BFS();
+		
+		System.out.println("\n---------------------------------------");
+		System.out.println("8x8 Maze\n");
+		Maze maze4 = new Maze(8);
+		maze4.generateMaze();
+		//System.out.print(maze.displayAdjList());
+		System.out.print(maze4.displayMaze());
+		
+		System.out.println("\n\nDFS:");
+		maze4.solveDFS();
+		System.out.println(maze4.displayDFS());
+		System.out.println();
+		System.out.println(maze4.displayDFSPath());
+		System.out.println(maze4.displayDFSInfo());
+		
+		System.out.println("\nBFS:");
+		maze4.BFS();
+		
+		System.out.println("\n---------------------------------------");
+		System.out.println("10x10 Maze\n");
+		Maze maze5 = new Maze(10);
+		maze5.generateMaze();
+		//System.out.print(maze.displayAdjList());
+		System.out.print(maze5.displayMaze());
+		
+		System.out.println("\n\nDFS:");
+		maze5.solveDFS();
+		System.out.println(maze5.displayDFS());
+		System.out.println();
+		System.out.println(maze5.displayDFSPath());
+		System.out.println(maze5.displayDFSInfo());
+		
+		System.out.println("\nBFS:");
+		maze5.BFS();
+		
 	}
-
-
 }
