@@ -17,10 +17,9 @@ public class FileHelper
 		File file = new File(filename); //create file to be read
 		Scanner sc = new Scanner(file); //create scanner used to read from file
 		String text = ""; //holds text read from file
-	
-		ArrayList<String> walls = new ArrayList<>();
-		ArrayList<String> floors = new ArrayList<>();
 		
+		sc.nextLine();
+		 
 		while (sc.hasNextLine()) 
 		{
 			text += sc.nextLine();
@@ -28,8 +27,6 @@ public class FileHelper
 		}
 
 		System.out.println(text);
-		
-		
 		
 		sc.close();
 		return text;
@@ -41,19 +38,3 @@ public class FileHelper
 		readFile("maze10.txt");
 	}
 }
-
-//			
-
-//for(int i = 0; i < 2 * dimension + 1; i++)
-//{
-//	
-//}
-//
-//while(count < 2 * dimension + 1)
-//{
-//	text = sc.next();
-//	count ++;
-//}
-////append each line to text with new line character used for split
-////text += sc.nextLine() + "\n";
-//count ++;
