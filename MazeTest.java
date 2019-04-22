@@ -1,4 +1,4 @@
-
+package sok.cs146.project3;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -89,8 +89,12 @@ public class MazeTest {
 		System.out.println("\nBFS:");
 		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
+		System.out.println(maze.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
 		//JUnits Test
-		//assertEquals(solution4by4, maze.displayMazeVisitsBFS());
+		assertEquals(solution4by4, maze.displayMazeSolutionBFS());
 	}
 	
 	@Test
@@ -237,8 +241,12 @@ public class MazeTest {
 		System.out.println("\nBFS:");
 		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
-		// JUnits Test
-		//assertEquals(solution6by6, maze.displayMazeVisitsBFS());
+		System.out.println(maze.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
+		//JUnits Test
+		assertEquals(solution6by6, maze.displayMazeSolutionBFS());
 	}
 	
 	@Test
@@ -476,10 +484,13 @@ public class MazeTest {
 		
 		//BFS
 		System.out.println("\nBFS:");
-		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
-		// JUnits Test
-		//assertEquals(solution6by6, maze.displayMazeVisitsBFS());		
+		System.out.println(maze.displayMazeVisitsBFS());
+		System.out.println();
+		System.out.println(maze.displayMazeSolutionBFS());
+		System.out.println(maze.displayBFSInfo());
+		//JUnits Test
+		assertEquals(solution8by8, maze.displayMazeSolutionBFS());	
 	}
 	
 	@Test
@@ -824,9 +835,12 @@ public class MazeTest {
 		
 		//BFS
 		System.out.println("\nBFS:");
-		System.out.println("bfs goes here ------remove dis");
 		maze.BFS();
-		// JUnits Test
-		//assertEquals(solution10by10, maze.displayMazeVisitsBFS());
+		System.out.println(maze.displayDFS());
+		System.out.println();
+		System.out.println(maze.displayDFSPath());
+		System.out.println(maze.displayDFSInfo());
+		//JUnits Test
+		assertEquals(solution10by10, maze.displayDFSPath());
 	}
 }
