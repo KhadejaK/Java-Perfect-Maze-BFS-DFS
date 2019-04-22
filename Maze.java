@@ -1,4 +1,3 @@
-
 /**
  
  * A program that will automatically generate and solve mazes. 
