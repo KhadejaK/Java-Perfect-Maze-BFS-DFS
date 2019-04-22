@@ -1,4 +1,3 @@
-package cs146S19.Khalid.project3;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;

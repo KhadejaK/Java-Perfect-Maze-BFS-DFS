@@ -1,4 +1,3 @@
-package cs146S19.Khalid.project3;
 
 /**
  * Our Test cases for the Maze
@@ -95,6 +94,4 @@ public class MazeTester
 		maze5.BFS();
 		
 	}
-
-
 }
