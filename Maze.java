@@ -1,3 +1,4 @@
+
 /**
  
  * A program that will automatically generate and solve mazes. 
@@ -484,30 +485,32 @@ public class Maze
 	 */
 	public void BFS()
 	{
-		boolean[] visited = new boolean[vertices];
-		int[] previous = new int[vertices]; //vertex at index was visited after element at indexx
+		boolean[] visited = new boolean[vertices];	//keep track of visited nodes
+		int[] previous = new int[vertices]; 		//vertex at index was visited after element at index
 		for(int i = 0; i < visited.length; i++)
 		{
 			visited[i] = false;
 			previous[i] = -1;
 		}
 		
-		ArrayList<Integer> orderOfNodesVisited = new ArrayList<>();
-		ArrayList<Integer> queue = new ArrayList<>(); //nodes to visit
+		ArrayList<Integer> orderOfNodesVisited = new ArrayList<>(); //keep track of order of nodes visited
+		ArrayList<Integer> queue = new ArrayList<>(); 				//nodes to visit
 		
 		visited[0] = true; //we always enter maze at upper left hand corner
 		queue.add(0); 
 		
-		boolean exit = false;
+		boolean exit = false; 	//for ending while when exit found
+		
 		while(queue.size() != 0)
 		{
-			int exploredCell = queue.remove(0);
+			int exploredCell = queue.remove(0);	//the node whose neighbors to explore
 			orderOfNodesVisited.add(exploredCell); 
 			
-			LinkedList<Integer> neighborsToExplore = adjList.get(exploredCell);
+			LinkedList<Integer> neighborsToExplore = adjList.get(exploredCell);	//the neighbors to explore
 			
 			if(exit)
 			{
+				orderOfNodesVisited.add(vertices - 1); 
 				break;
 			}
 			
@@ -521,7 +524,7 @@ public class Maze
 					queue.add(neighbor);
 					
 				}
-				if(i == vertices - 1)
+				if(neighbor == vertices - 1)
 				{
 					exit = true;
 					break;
@@ -531,33 +534,22 @@ public class Maze
 		
 		}//end while
 			
-		ArrayList<Integer> shortestPath = new ArrayList<>();
+		ArrayList<Integer> shortestPath = new ArrayList<>();	//shortest path to solution
 		
-		for(int i = previous.length - 1; i >= 0; i--)
-		{
-			if(previous[i] != -1)
-			{
-				shortestPath.add(previous[i]);
-			}
-			
-			if(previous[i] == 1 || previous[i] == row)
-			{
-				break;
-			}
+		int i = previous.length - 1;
+		
+		while (i != 0) {
+
+			shortestPath.add(i);
+			i = previous[i];
 			
 		}
-		
+
 		shortestPath.add(vertices - 1);
-		System.out.println();
 		Collections.sort(shortestPath);
 
 		orderVisitedBFS = orderOfNodesVisited;
 		solutionBFS = shortestPath;
-
-		System.out.println(displayMazeSolutionBFS());
-		System.out.println();
-		System.out.println(displayMazeVisitsBFS());
-		System.out.println(displayBFSInfo());
 		
 	}//end BFS()
 	
@@ -587,7 +579,7 @@ public class Maze
 			}
 			else
 			{
-				if(solutionBFS.contains(x * row -1))
+				if(solutionBFS.contains(x * row))
 				{
 					wall += "|#";
 				}
